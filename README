@@ -1,0 +1,31 @@
+kdump-test
+----------
+
+This is for RHEL/fedora kexec-tools test only!
+
+1. This project is to provide a quick tool for testing if current kdump config
+   is valid. To achieve this, a real kernel crash and dump will be performed,
+   then a vmcore existence checking will proceed. Only if the vmcore with a
+   special test id will be regarded as the success of kdump, which in return,
+   indicating the validity of kdump config.
+
+   Although this is a stand alone repo to maintain, it cannot work without
+   kexec-tools, since it will source a few essential functions from kexec-tools.
+   The purpose of such design, is to decouple kdump function implementation
+   (kexec-tools) with kdump user experience(kdump-test).
+
+2. To use kdump-test:
+   1) Ensure kexec-tools is already installed.
+   2) Clone kdump-test repo to a directory.
+   3) Enter the directory and type command:
+        $ ./kdump-test test
+      It will trigger a real kernel crash and dump, so the system will be
+      restarted. Please check if there is any unsaved work before doing this,
+      and also schedule machine maintenance time if it will take a long time
+      for the machine restart.
+   4) After system reboot, type command:
+        $ ./kdump-test test-check
+      It will trigger the vmcore checking and report the checking result. This
+      procedure will automatically mount remote/local drives based on the kdump
+      config before vmcore checking.
+   5) Check the result.
