@@ -14,18 +14,26 @@ This is for RHEL/fedora kexec-tools test only!
    The purpose of such design, is to decouple kdump function implementation
    (kexec-tools) with kdump user experience(kdump-test).
 
-2. To use kdump-test:
+2. To use kdump-test on local drive:
    1) Ensure kexec-tools is already installed.
    2) Clone kdump-test repo to a directory.
-   3) Enter the directory and type command:
+   3) Enter the directory and type command to start test:
         $ ./kdump-test test
       It will trigger a real kernel crash and dump, so the system will be
       restarted. Please check if there is any unsaved work before doing this,
       and also schedule machine maintenance time if it will take a long time
       for the machine restart.
-   4) After system reboot, type command:
+   4) After system reboot, type command to check test result:
         $ ./kdump-test test-check
       It will trigger the vmcore checking and report the checking result. This
       procedure will automatically mount remote/local drives based on the kdump
       config before vmcore checking.
    5) Check the result.
+
+3. To use kdump-test without downloading to local drive:
+   1) Ensure kexec-tools is already installed.
+   2) Type command to start test:
+        $ curl https://raw.githubusercontent.com/rhkdump/kdump-test/master/kdump-test{-lib.sh,} | bash -s test
+   3) Type command to check test result:
+        $ curl https://raw.githubusercontent.com/rhkdump/kdump-test/master/kdump-test{-lib.sh,} | bash -s test-check
+   4) Check the result.

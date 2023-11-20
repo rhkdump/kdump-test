@@ -6,10 +6,12 @@ MKDUMPRD_TMPMNT="/var/kdump/tmp_mnt"
 KDUMP_TEST_SUCCESS_CHECKSUM="/var/kdump/kdump_test_checksum"
 DEV_KMSG="/dev/kmsg"
 DEFAULT_SSHKEY="/root/.ssh/kdump_id_rsa"
+CURRENT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)
 
 . /usr/lib/kdump/kdump-lib.sh
 . /usr/lib/dracut/dracut-logger.sh
-. kdump-test-lib.sh
+[[ -f "$CURRENT_DIR"/README ]] && source "$CURRENT_DIR"/kdump-test-lib.sh
+
 dlog_init
 
 declare -A OPT
