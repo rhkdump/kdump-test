@@ -90,10 +90,12 @@ is_fs_dump_target()
 # $3: kdump test id string
 kdump_test_check_id()
 {
-	local _path=$2 _id_str=$3
+	local _path=$2 _id_str=$3 _dir
 	local kexec_dmesg_file=$(find "$_path" -name "vmcore-dmesg.txt" -exec grep -l "$_id_str" {} +)
+	_dir=$(dirname "$kexec_dmesg_file")
+	local vmcore_file=$(find "$_dir" \( -name "vmcore" -or -name "vmcore.flat" \))
 
-	if [ -n "$kexec_dmesg_file" ]; then
+	if [[ -n "$kexec_dmesg_file" && -n "$vmcore_file" ]]; then
 		return 0
 	else
 		return 1
@@ -110,14 +112,16 @@ get_ssh_key_location()
 
 kdump_test_ssh_check_id()
 {
-	local kexec_dmesg_file
-	local _opt _target=$1 _path=$2 _id_str=$3
+	local kexec_dmesg_file vmcore_file
+	local _opt _target=$1 _path=$2 _id_str=$3 _dir
 
 	get_ssh_key_location
 	_opt=(-i "$SSH_KEY_LOCATION" -o BatchMode=yes -o StrictHostKeyChecking=yes)
 	kexec_dmesg_file=$(ssh -qn "${_opt[@]}" "$_target" find "$_path" -name "vmcore-dmesg.txt" -exec grep -l "$_id_str" {} +)
+	_dir=$(dirname "$kexec_dmesg_file")
+	vmcore_file=$(ssh -qn "${_opt[@]}" "$_target" find "$_dir" \\\( -name "vmcore" -or -name "vmcore.flat" \\\))
 
-	if [ -n "$kexec_dmesg_file" ]; then
+	if [[ -n "$kexec_dmesg_file" && -n "$vmcore_file" ]]; then
 		return 0
 	else
 		return 1
