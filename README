@@ -37,3 +37,6 @@ This is for RHEL/fedora kexec-tools test only!
    3) Type command to check test result:
         $ curl https://raw.githubusercontent.com/rhkdump/kdump-test/master/kdump-test{-lib.sh,} | bash -s test-check
    4) Check the result.
+
+4. Bug report
+   If any bug encounted, please report the bugs through github issues.
